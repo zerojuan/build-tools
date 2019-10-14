@@ -11,8 +11,14 @@ RELEASE_TYPE=$1
 echo $RELEASE_TYPE
 
 npm version $RELEASE_TYPE
-PACKAGE_VERSION=$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)
+PACKAGE_VERSION=$(cat package.json \
+  | grep version \
+  | head -1 \
+  | awk -F: '{ print $2 }' \
+  | sed 's/[",]//g' \
+  | tr -d '[[:space:]]')
 echo $PACKAGE_VERSION
+echo release/$PACKAGE_VERSION
 
 git checkout -b release/$PACKAGE_VERSION
 
