@@ -21,14 +21,27 @@ const argv = require("yargs").command(
       demandOption: true
     });
   }
-).argv;
+).command("download <bucketName>", "Download files in a bucket", yargs =>{
+  yargs.positional("bucketName", {
+    describe: "the bucket name",
+    type: "string",
+    demandOption: true
+  })
+}).argv;
 
 const mergeRelease = require("../bitbucket/merge-release");
+const gcloudStorage = require('../gcloud/download-gstorage');
+
 if (argv._[0] === "merge") {
   mergeRelease(argv.team, argv.repo, argv.branch)
     .then(() => {
       console.log("Done");
     })
+    .catch(err => {
+      console.error(err);
+    });
+} else if(argv._[0] === "download") {
+  gcloudStorage(argv.bucketName)
     .catch(err => {
       console.error(err);
     });

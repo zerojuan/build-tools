@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^3.4.0",
     "bitbucket": "^1.15.1",
     "dotenv": "^8.1.0",
     "yargs": "^14.0.0"
